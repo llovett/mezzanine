@@ -1,4 +1,3 @@
-
 from hashlib import md5
 import os
 from urllib import urlopen, urlencode, quote, unquote
@@ -499,7 +498,11 @@ def admin_app_list(request):
                         menu_order[model_label]
                 except KeyError:
                     app_index = None
-                    app_title = opts.app_label.title()
+                    # Allow override of app names on the admin site
+                    if hasattr(model_admin, "app_label"):
+                        app_title = model_admin.app_label.title()
+                    else:
+                        app_title = opts.app_label.title()
                     model_index = None
                     model_title = None
                 else:
